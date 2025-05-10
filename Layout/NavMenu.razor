@@ -1,0 +1,180 @@
+﻿@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+<link href="css/navbar.css" rel="stylesheet" />
+
+<nav class="navbar">
+    <div class="nav-container">
+        <!-- Logo -->
+        <div class="logo-container">
+            <img src="images/logo.png" alt="Logo" />
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn" @onclick="ToggleSidebar" aria-label="Toggle mobile menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- Desktop Menu -->
+        <div class="desktop-menu">
+            <ul class="nav-links">
+                <li>
+                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                        Home
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink class="nav-link" href="counter">
+                        Counter
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink class="nav-link" href="fetchdata">
+                        Fetch Data
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink class="nav-link" href="aboutus">
+                        About Us
+                    </NavLink>
+                </li>
+            </ul>
+
+            <!-- Navbar Actions -->
+            <div class="nav-actions">
+                @if (!isAuthenticated)
+                {
+                    <NavLink class="sign-in-btn" href="login">
+                        Sign In
+                    </NavLink>
+                }
+                else
+                {
+                    <NavLink class="sign-in-btn" href="profile">
+                        Profile
+                    </NavLink>
+                    <button class="sign-in-btn" @onclick="OnSignOut">
+                        Sign Out
+                    </button>
+                }
+
+                <!-- Language Selector -->
+                <div class="lang-selector">
+                    <button class="sign-in-btn" @onclick="ToggleLanguageSelector">
+                        Language
+                    </button>
+                    @if (isLanguageSelectorOpen)
+                    {
+                        <div class="lang-dropdown">
+                            <button class="dropdown-item" @onclick="@(() => ChangeLanguage("AR"))">AR</button>
+                            <button class="dropdown-item" @onclick="@(() => ChangeLanguage("EN"))">EN</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Sidebar Overlay -->
+<div class="sidebar-overlay @(isSidebarOpen ? "active" : "")" @onclick="ToggleSidebar"></div>
+
+<!-- Mobile Sidebar -->
+<div class="sidebar @(isSidebarOpen ? "active" : "")">
+    <div class="sidebar-header">
+        <img src="images/logo.png" alt="Logo" />
+        <button class="close-btn" @onclick="ToggleSidebar" aria-label="Close mobile menu">
+            <span class="oi oi-x" aria-hidden="true"></span>
+        </button>
+    </div>
+
+    <div class="sidebar-content">
+        <ul class="sidebar-links">
+            <li><NavLink class="sidebar-btn" href="" Match="NavLinkMatch.All" @onclick="ToggleSidebar">Home</NavLink></li>
+            <li><NavLink class="sidebar-btn" href="counter" @onclick="ToggleSidebar">Counter</NavLink></li>
+            <li><NavLink class="sidebar-btn" href="fetchdata" @onclick="ToggleSidebar">Fetch Data</NavLink></li>
+            <li><NavLink class="sidebar-btn" href="aboutus" @onclick="ToggleSidebar">About Us</NavLink></li>
+        </ul>
+
+        <div class="sidebar-actions">
+            @if (!isAuthenticated)
+            {
+                <NavLink class="sidebar-btn" href="login" @onclick="ToggleSidebar">Sign In</NavLink>
+            }
+            else
+            {
+                <NavLink class="sidebar-btn" href="profile" @onclick="ToggleSidebar">Profile</NavLink>
+                <button class="sidebar-btn" @onclick="async () => { await OnSignOut(); ToggleSidebar(); }">Sign Out</button>
+            }
+        </div>
+
+        <div class="sidebar-lang">
+            <h5>Language</h5>
+            <div class="lang-buttons">
+                <button @onclick="@(() => ChangeLanguage("AR"))">AR</button>
+                <button @onclick="@(() => ChangeLanguage("EN"))">EN</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool isAuthenticated = false;
+    private bool isSidebarOpen = false;
+    private bool isLanguageSelectorOpen = false;
+    private bool isBrowserInitialized = false;
+
+    private async Task ToggleSidebar()
+    {
+        isSidebarOpen = !isSidebarOpen;
+        if (!isSidebarOpen) isLanguageSelectorOpen = false;
+        await Task.CompletedTask; // Ensure async compatibility
+        StateHasChanged(); // Force UI update
+    }
+
+    private void ToggleLanguageSelector()
+    {
+        isLanguageSelectorOpen = !isLanguageSelectorOpen;
+        StateHasChanged();
+    }
+
+    private void ChangeLanguage(string language)
+    {
+        // Implement language change logic here
+        isLanguageSelectorOpen = false;
+        StateHasChanged();
+    }
+
+    private async Task OnSignOut()
+    {
+        if (isBrowserInitialized)
+        {
+            await JSRuntime.InvokeVoidAsync("localStorage.removeItem", "token");
+            await JSRuntime.InvokeVoidAsync("localStorage.removeItem", "isAuthenticated");
+            await JSRuntime.InvokeVoidAsync("localStorage.removeItem", "isAdmin");
+            await JSRuntime.InvokeVoidAsync("localStorage.removeItem", "userId");
+        }
+        isAuthenticated = false;
+        NavigationManager.NavigateTo("/login");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            isBrowserInitialized = true;
+            try
+            {
+                var token = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
+                isAuthenticated = !string.IsNullOrEmpty(token);
+                StateHasChanged();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"JS Interop error: {ex.Message}");
+            }
+        }
+    }
+}

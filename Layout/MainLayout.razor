@@ -1,0 +1,32 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+
+@code {
+    private bool IsLoginPage => NavigationManager.Uri.Contains("/login");
+}
+
+<div class="container-fluid px-0">
+    @if (!IsLoginPage)
+    {
+        <div class="row g-0">
+            <div class="col-12">
+                <NavMenu />
+            </div>
+        </div>
+    }
+    <div class="row g-0">
+        <div class="col-12" style="min-height: 100vh;">
+            <main class="d-flex justify-content-center align-items-center" style="min-height: 100%;">
+                @Body
+            </main>
+        </div>
+    </div>
+    @if (!IsLoginPage)
+    {
+        <div class="row g-0">
+            <div class="col-12">
+                <Footer />
+            </div>
+        </div>
+    }
+</div>
