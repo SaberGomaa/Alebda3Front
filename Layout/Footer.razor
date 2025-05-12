@@ -1,38 +1,80 @@
-﻿<footer class="bg-dark text-white pt-4 pb-2">
-  <div class="container text-center text-md-start">
-    <div class="row">
-      <!-- Company Info -->
-      <div class="col-md-4 mb-4">
-        <h5 class="text-uppercase">My Company</h5>
-        <p>
-          Building solutions for a better tomorrow. Contact us for more info.
-        </p>
-      </div>
+﻿@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+<link href="css/footer.css" rel="stylesheet" />
 
-      <!-- Quick Links -->
-      <div class="col-md-4 mb-4">
-        <h5 class="text-uppercase">Quick Links</h5>
-        <ul class="list-unstyled">
-          <li><a href="#" class="text-white text-decoration-none">Home</a></li>
-          <li><a href="#" class="text-white text-decoration-none">About</a></li>
-          <li><a href="#" class="text-white text-decoration-none">Services</a></li>
-          <li><a href="#" class="text-white text-decoration-none">Contact</a></li>
-        </ul>
-      </div>
+<footer class="footer">
+    <div class="footer-container">
+        <!-- الشعار -->
+        <div class="footer-logo">
+            <NavLink href="">
+                <img src="images/-logo.png" alt="شعار إدراك" />
+            </NavLink>
+        </div>
 
-      <!-- Contact -->
-      <div class="col-md-4 mb-4">
-        <h5 class="text-uppercase">Contact Us</h5>
-        <p>Email: info@company.com</p>
-        <p>Phone: +123 456 7890</p>
-        <p>Address: 123 Main St, City, Country</p>
-      </div>
+        <!-- روابط التنقل -->
+        <div class="footer-links">
+            <div class="link-column">
+                <h4>استكشف</h4>
+                <ul>
+                    <li><NavLink href="courses">الدورات</NavLink></li>
+                    <li><NavLink href="programs">البرامج</NavLink></li>
+                    <li><NavLink href="about">حول</NavLink></li>
+                </ul>
+            </div>
+            <div class="link-column">
+                <h4>الدعم</h4>
+                <ul>
+                    <li><NavLink href="help">مركز المساعدة</NavLink></li>
+                    <li><NavLink href="contact">اتصل بنا</NavLink></li>
+                    <li><NavLink href="faq">الأسئلة الشائعة</NavLink></li>
+                </ul>
+            </div>
+            <div class="link-column">
+                <h4>تواصل</h4>
+                <ul>
+                    <li><a href="https://twitter.com/" target="_blank">تويتر</a></li>
+                    <li><a href="https://facebook.com/" target="_blank">فيسبوك</a></li>
+                    <li><a href="https://linkedin.com/company/" target="_blank">لينكدإن</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- معلومات الاتصال -->
+        <div class="footer-contact">
+            <h4>الاتصال</h4>
+            <p>البريد الإلكتروني: <a href="">support</a></p>
+            <p>الهاتف: +201095575989</p>
+        </div>
+
+        <!-- وسائل التواصل الاجتماعي -->
+        <div class="footer-social">
+            <h4>تابعنا</h4>
+            <div class="social-icons">
+                <a href="https://twitter.com/" target="_blank" aria-label="تويتر">
+                    <img src="images/icons8-twitter-50.png" alt="تويتر" />
+                </a>
+                <a href="https://facebook.com/" target="_blank" aria-label="فيسبوك">
+                    <img src="images/facebook.png" alt="فيسبوك" />
+                </a>
+                <a href="https://linkedin.com/company/" target="_blank" aria-label="لينكدإن">
+                    <img src="images/linkedin.png" alt="لينكدإن" />
+                </a>
+            </div>
+        </div>
+
+        <!-- حقوق النشر -->
+        <div class="footer-copyright">
+            <p>© @DateTime.Now.Year إبداع. جميع الحقوق محفوظة.</p>
+        </div>
     </div>
-
-    <hr class="border-light" />
-
-    <div class="text-center">
-      &copy; 2025 My Company. All rights reserved.
-    </div>
-  </div>
 </footer>
+
+
+@code {
+    private async Task ChangeLanguage(string language)
+    {
+        var culture = language.ToLower() == "ar" ? "ar-SA" : "en-US";
+        await JSRuntime.InvokeVoidAsync("localStorage.setItem", "culture", culture);
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+    }
+}

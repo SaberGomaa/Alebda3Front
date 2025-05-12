@@ -1,131 +1,93 @@
-﻿* {
-    font-family: 'Cairo', 'Arial', sans-serif;
-}
-
-.body {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #f4f9ff 0%, #e6eef8 100%);
+﻿body {
+    font-family: 'Cairo', sans-serif;
+    direction: rtl;
+    background-color: #f3f5f7;
+    margin: 0;
+    padding: 0;
 }
 
 .login-container {
-    width: 35rem;
-    background: white;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-    position: relative;
-    overflow: hidden;
+    max-width: 400px;
+    margin: 100px auto;
+    background-color: white;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
-    .login-container::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 5px;
-        background: linear-gradient(90deg, #2C3E50, #3498DB);
-    }
-
-.logo {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-    .logo h1 {
+    .login-container h2 {
+        text-align: center;
+        margin-bottom: 30px;
         color: #333;
-        font-size: 28px;
-        font-weight: 600;
     }
 
-    .logo span {
-        color: #d4af37;
-    }
-
-.input-group {
-    margin-bottom: 20px;
+label {
+    display: block;
+    margin-bottom: 6px;
+    color: #444;
+    font-weight: bold;
 }
 
-    .input-group label {
-        display: block;
-        margin-bottom: 8px;
-        color: #555;
-        font-size: 14px;
-        font-weight: 500;
-    }
-
-    .input-group input {
-        width: 100%;
-        padding: 12px 15px;
-        border: 2px solid #eee;
-        border-radius: 8px;
-        font-size: 15px;
-        transition: all 0.3s ease;
-    }
-
-        .input-group input:focus {
-            border-color: #2C3E50;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
-        }
-
-.remember-forgot {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+input.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    font-size: 15px;
 }
 
-.remember-me {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-    .remember-me input[type="checkbox"] {
-        accent-color: #2C3E50;
+    input.form-control:focus {
+        border-color: #007BFF;
+        outline: none;
+        box-shadow: 0 0 3px #007BFF40;
     }
 
-.forgot-password {
-    color: #2C3E50;
+.login-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .login-button:hover {
+        background-color: #0056b3;
+    }
+
+.signup-link, .forgot-password {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #007BFF;
     text-decoration: none;
     font-size: 14px;
 }
 
-.login-button {
-    width: 100%;
-    padding: 14px;
-    background: linear-gradient(90deg, #2C3E50, #3498DB);
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
+.text-danger {
+    color: red;
+    margin-top: -8px;
+    margin-bottom: 10px;
+    font-size: 13px;
 }
 
-    .login-button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px #2C3E50;
-    }
-
-.signup-link {
-    text-align: center;
-    margin-top: 20px;
+.remember-forgot {
+    text-align: left;
     font-size: 14px;
-    color: #666;
+    margin-top: 5px;
 }
 
-    .signup-link a {
-        color: #2C3E50;
-        text-decoration: none;
-        font-weight: 600;
-    }
-
-.login-button:disabled {
-    cursor: not-allowed;
+.btn-link {
+    background: none;
+    border: none;
+    color: #007BFF;
+    padding: 0;
+    font-size: 14px;
+    cursor: pointer;
 }

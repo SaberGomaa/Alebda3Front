@@ -1,7 +1,100 @@
-﻿@page "/"
+﻿@page "/home"
+@page "/"
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+<link href="css/home.css" rel="stylesheet" />
 
-<PageTitle>Home</PageTitle>
+<div class="homepage" dir="rtl">
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 data-aos="fade-up">تعلم مع إبداع</h1>
+            <p data-aos="fade-up" data-aos-delay="200">انضم إلى ملايين المتعلمين في المنطقة العربية واكتشف دورات مجانية عالية الجودة.</p>
+            <a href="courses" class="cta-button" data-aos="fade-up" data-aos-delay="400">استكشف الدورات الآن</a>
+        </div>
+    </section>
 
-<h1>Hello, world!</h1>
+    <!-- Featured Courses -->
+    <section class="courses">
+        <h2 data-aos="fade-up">الدورات المميزة</h2>
+        <div class="course-grid">
+            <div class="course-card" data-aos="fade-up" data-aos-delay="100">
+                <img src="images/course1.jpg" alt="دورة تصميم الجرافيك" />
+                <h3>مقدمة في تصميم الجرافيك</h3>
+                <p>تعلم أساسيات التصميم باستخدام الألوان والأشكال.</p>
+                <a href="course/graphic-design" class="course-btn">ابدأ الآن</a>
+            </div>
+            <div class="course-card" data-aos="fade-up" data-aos-delay="200">
+                <img src="images/course2.jpg" alt="دورة ريادة الأعمال" />
+                <h3>ريادة الأعمال</h3>
+                <p>اكتسب المهارات لبدء مشروعك الخاص.</p>
+                <a href="course/entrepreneurship" class="course-btn">ابدأ الآن</a>
+            </div>
+            <div class="course-card" data-aos="fade-up" data-aos-delay="300">
+                <img src="images/course3.jpg" alt="دورة البرمجة" />
+                <h3>أساسيات البرمجة</h3>
+                <p>ادخل عالم البرمجة مع Python.</p>
+                <a href="course/programming" class="course-btn">ابدأ الآن</a>
+            </div>
+        </div>
+    </section>
 
-Welcome to your new app.
+    <!-- Categories -->
+    <section class="categories">
+        <h2 data-aos="fade-up">تصفح حسب الفئة</h2>
+        <div class="category-grid">
+            <div class="category-card" data-aos="zoom-in" data-aos-delay="100">
+                <img src="images/category-health.jpg" alt="الصحة" />
+                <h3>الصحة</h3>
+            </div>
+            <div class="category-card" data-aos="zoom-in" data-aos-delay="200">
+                <img src="images/category-science.jpg" alt="العلوم" />
+                <h3>العلوم</h3>
+            </div>
+            <div class="category-card" data-aos="zoom-in" data-aos-delay="300">
+                <img src="images/category-business.jpg" alt="الأعمال" />
+                <h3>الأعمال<img/ itemprop="image" src="images/category-business.jpg" alt="الأعمال" /></h3>
+                <h3>الأعمال</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <h2 data-aos="fade-up">ماذا يقول المتعلمون</h2>
+        <div class="testimonial-grid">
+            <div class="testimonial" data-aos="slide-up" data-aos-delay="100">
+                <p>"غيرت إبداع حياتي المهنية من خلال دوراتها الممتازة!"</p>
+                <span>- أحمد، مصر</span>
+            </div>
+            <div class="testimonial" data-aos="slide-up" data-aos-delay="200">
+                <p>"الدورات مجانية وسهلة الوصول، ساعدتني في تحسين مهاراتي."</p>
+                <span>- فاطمة، الأردن</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <h2 data-aos="fade-up">ابدأ رحلتك التعليمية اليوم</h2>
+        <a href="signup" class="cta-button" data-aos="fade-up" data-aos-delay="200">اشترك الآن</a>
+    </section>
+</div>
+
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                await JSRuntime.InvokeVoidAsync("loadAOS", null);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"JS Interop error: {ex.Message}");
+            }
+        }
+    }
+}
